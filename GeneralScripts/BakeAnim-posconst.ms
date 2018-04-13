@@ -41,7 +41,9 @@ rollout BakeAnimRoll "bake animation"
 	)
 	group ""
 	(
-	checkBox chkKeepOffset "KeepOffset" checked:false --enabled:false
+	checkBox chkKeepOffset "KeepOffset" checked:false across:2--enabled:false 
+	checkbox chk_Cat "CAT" checked:false 
+		
 	checkBox chkPosition "Pos" checked:true across:3
 	checkBox chkRotation "Rot" checked:true
 	checkBox chkScale "Scale" checked:false --enabled:false
@@ -153,6 +155,8 @@ rollout BakeAnimRoll "bake animation"
 				if chkRotation.checked then ( with animate on ( toObj.Rotation = inverse tm.rotation ) )
 				if chkPosition.checked then ( with animate on ( toObj.position = tm.position ) )
 				if chkScale.checked then ( with animate on ( toObj.scale = tm.scale ) )
+				--------------------------------------------
+				if chk_Cat.checked then ( with animate on ( toObj.Transform = tm) )
 			)
 	)
 	fn getUnrealTm =
