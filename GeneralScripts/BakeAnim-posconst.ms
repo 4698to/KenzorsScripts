@@ -41,9 +41,9 @@ rollout BakeAnimRoll "bake animation"
 	)
 	group ""
 	(
-	checkBox chkKeepOffset "KeepOffset" checked:false across:2--enabled:false 
-	checkbox chk_Cat "CAT" checked:false 
-		
+	checkBox chkKeepOffset "KeepOffset" checked:false across:2--enabled:false
+	checkbox chk_Cat "CAT" checked:false
+
 	checkBox chkPosition "Pos" checked:true across:3
 	checkBox chkRotation "Rot" checked:true
 	checkBox chkScale "Scale" checked:false --enabled:false
@@ -52,13 +52,14 @@ rollout BakeAnimRoll "bake animation"
 	Button btnBakeCurrentFrame "Bake Current Frame" enabled:false
 	group ""
 	(
-	checkBox chkRemoveKeysBeforeBaking "Remove Keys Before Baking" checked:true --enabled:false
-	radiobuttons rBtnRange "" labels: #("All Keys", "Current time Range")
+	checkBox chkRemoveKeysBeforeBaking "Remove Keys Before Baking" checked:false --enabled:false
+	radiobuttons rBtnRange "" labels: #("All Keys", "Current time Range") enabled:false
 
 	Button BtnBake "Bake" width:80 across:2 enabled:false
 	Spinner SpnStep "Step" range:[1,100,1] type:#integer fieldwidth:30 offset:[0,2]
 	)
 -----------------------------------------------------------------------------------
+/*
 	group "Constraint" (
 		checkbox chkconstPos "Position" checked:true across:2
 		checkBox chkposOffset "PosOffset" checked:false
@@ -82,7 +83,7 @@ rollout BakeAnimRoll "bake animation"
 		checkbox Scale_chk "Scale" checked:false
 		button OK_btn "Delete"
 	    -- Group body.
-	)
+	)*/
 	------------------------------------------------------------------------------------------------
 	fn checkAndSelect theObj =
 	(
@@ -152,11 +153,21 @@ rollout BakeAnimRoll "bake animation"
 		at time t
 			(
 				tm = ptrGetTargetObjectTm() * UnrealTransform
-				if chkRotation.checked then ( with animate on ( toObj.Rotation = inverse tm.rotation ) )
-				if chkPosition.checked then ( with animate on ( toObj.position = tm.position ) )
-				if chkScale.checked then ( with animate on ( toObj.scale = tm.scale ) )
+				if chk_Cat.checked then
+				(
+					with animate on
+					(
+						try (toObj.Transform = tm)catch()
+					)
+				)
+				else
+				(
+					if chkRotation.checked then ( with animate on ( toObj.Rotation = inverse tm.rotation ) )
+					if chkPosition.checked then ( with animate on ( toObj.position = tm.position ) )
+					if chkScale.checked then ( with animate on ( toObj.scale = tm.scale ) )
+				)
 				--------------------------------------------
-				if chk_Cat.checked then ( with animate on ( toObj.Transform = tm) )
+
 			)
 	)
 	fn getUnrealTm =
@@ -206,7 +217,7 @@ rollout BakeAnimRoll "bake animation"
 	)
 
 -----------------------------------------------------------------------------Constraint
-
+	/*
     on chkconstraint pressed do
     (
     	if checkNodesOK() do
@@ -337,7 +348,7 @@ rollout BakeAnimRoll "bake animation"
 				)
 			)
 		)
-
+		*/
 
 )
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
